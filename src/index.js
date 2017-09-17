@@ -1,5 +1,5 @@
-// module.exports = function multiply(first, second) { //TODO
-function multiply(first, second) {
+module.exports = function multiply(first, second) { //TODO
+// function multiply(first, second) {
     let result;
 
     let one = getDigitalArrayFromStr(first);
@@ -9,8 +9,8 @@ function multiply(first, second) {
 
     result = normalize(result);
 
-    return result.join('');
-}
+    return result.reverse().join('');
+};
 
 function karaczubaMultiplication(first, second, level = 3) {
 
@@ -32,7 +32,7 @@ function karaczubaMultiplication(first, second, level = 3) {
     let temp2 = karaczubaMultiplication(first_left, second_left);
     let temp3 = karaczubaMultiplication(sum(first_left, first_right), sum(second_left, second_right));
 
-    return sum(sum(elevate(temp1.slice(0), n),temp2.slice(0)), elevate(diff(temp3, sum(temp1, temp2)), n/2));
+    return sum(sum(elevate(temp1.slice(0), n),temp2.slice(0)), elevate(diff(temp3.slice(0), sum(temp1.slice(0), temp2)), n/2));
 }
 
 //example '1234' -> [4, 3, 2, 1] //4 *10^0+ 3 *10^1+ 2 *10^2+ 1 *10^3
@@ -47,6 +47,8 @@ function getDigitalArrayFromStr(string) {
 function naiveMultiplication(first, second){
     let one = first.slice(0); //clone array
     let two = second.slice(0); //clone array
+    normalize(one);
+    normalize(two);
     return getDigitalArrayFromStr(String((+one.reverse().join('') * +two.reverse().join(''))));
 }
 
@@ -58,12 +60,17 @@ function align(arr, n){
 }
 
 function normalize(result) {
+    log(result);
     let base = 10;
     for (let i = 0; i < result.length; i++) {
         let temp = Math.floor(result[i]/base);
         if (temp !== 0){
+            result.push(0);
             result[i+1] += temp;
             result[i] -= temp * base;
+        }
+        if (isNaN(result[i])){
+            throw "Invalid data format.";
         }
     }
 
@@ -75,7 +82,7 @@ function normalize(result) {
         }
     }
 
-    return result.reverse();
+    return result;
 }
 
 function elevate(arr, n){
@@ -111,21 +118,24 @@ function log(item){
     console.log(item);
 }
 
-log(multiply('909', '990'));
+
 
 // log(multiply('5', '10'));
-//, '50');
+// //, '50');
 // log(multiply('10000', '10000'));
-//, '100000000');
-// log(multiply('100000000', '100000000'));
-// // '10000000000000000');
+// //, '100000000');
+// // log(multiply('100000000', '100000000'));
+// // // '10000000000000000');
+// log(multiply('3286', '5895'));
+
+
 // log(multiply('329568934658432659586', '58379426534596'));
-// //, '19240045408977038918943543720037256');
-// log(multiply('439265893465876578346584325', '5837942653434596'));
-// //, '2564409095663498076999916945221826386307700');
-// log(multiply('43923423584325', '58379423434596'));
-// //, '2564224144126429540528307700');
-// log(multiply('111111111111111111', '22222222222222222222'));
-// //, '2469135802469135799975308641975308642');
-// log(multiply('333333333333333333333', '22222222222222222222'));
-// //, '7407407407407407407325925925925925925926');
+// // //, '19240045408977038918943543720037256');
+// // log(multiply('439265893465876578346584325', '5837942653434596'));
+// // //, '2564409095663498076999916945221826386307700');
+// // log(multiply('43923423584325', '58379423434596'));
+// // //, '2564224144126429540528307700');
+// // log(multiply('111111111111111111', '22222222222222222222'));
+// // //, '2469135802469135799975308641975308642');
+// // log(multiply('333333333333333333333', '22222222222222222222'));
+// // //, '7407407407407407407325925925925925925926');
